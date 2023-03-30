@@ -22,6 +22,17 @@ class RestaurantsService {
     logger.log('[UPDATED RESTAURANT]', res.data)
   }
 
+  async getRestaurantReviews(restaurantId) {
+    const res = await api.get(`api/restaurants/${restaurantId}/reviews`)
+    logger.log('[RESTAURANT REVIEWS]', res.data)
+    AppState.reviews = res.data
+  }
+
+  async searchRestaurants(search) {
+    const res = await api.get(`api/restaurants/searchExample?search=${search}`)
+    logger.log('[GOT RESTAURANTS]', res.data)
+    AppState.restaurants = res.data
+  }
 }
 
 export const restaurantsService = new RestaurantsService()

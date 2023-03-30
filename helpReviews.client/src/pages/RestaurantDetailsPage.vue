@@ -7,6 +7,9 @@
         <h3>{{ restaurant.category }}</h3>
       </div>
     </section>
+    <section>
+      <p>{{ restaurant.description }}</p>
+    </section>
     <section class="row justify-content-end" v-if="restaurant.ownerId == account.id">
       <button v-if="!restaurant.shutdown" class="btn btn-danger col-4" title="shutdown restaurant"
         @click="shutdownRestaurant">
@@ -18,6 +21,14 @@
             class="mdi mdi-silverware-spoon"></i><i class="mdi mdi-door-open"></i><i
             class="mdi mdi-arrow-u-up-right"></i><i class="mdi mdi-check"></i></marquee>
       </button>
+    </section>
+    <section v-if="account.id">
+      <ReviewForm />
+    </section>
+    <section class="row justify-content-center">
+      <div class="col-10" v-for="r in reviews">
+        <ReviewCard :review="r" />
+      </div>
     </section>
   </div>
 </template>
@@ -36,6 +47,7 @@ export default {
     const router = useRouter()
     onMounted(() => {
       getActiveRestaurant()
+      getActiveRestaurantReviews()
     })
     async function getActiveRestaurant() {
       try {
@@ -44,11 +56,19 @@ export default {
         logger.error(error)
         Pop.error(error.message)
         router.push({ name: 'Home' })
-
+      }
+    }
+    async function getActiveRestaurantReviews() {
+      try {
+        await restaurantsService.getRestaurantReviews(route.params.restaurantId)
+      } catch (error) {
+        logger.error(error)
+        Pop.error(error.message)
       }
     }
     return {
       restaurant: computed(() => AppState.activeRestaurant),
+      reviews: computed(() => AppState.reviews),
       account: computed(() => AppState.account),
       async shutdownRestaurant() {
         try {

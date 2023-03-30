@@ -49,7 +49,8 @@ public class ReviewsRepository
     creator.*
     FROM reviews rv
     JOIN accounts creator ON rv.creatorId = creator.id
-    WHERE rv.restaurantId = @restaurantId;
+    WHERE rv.restaurantId = @restaurantId
+    ORDER BY rv.createdAt DESC;
     ";
     List<Review> reviews = _db.Query<Review, Profile, Review>(sql, (review, creator) =>
     {

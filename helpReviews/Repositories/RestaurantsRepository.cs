@@ -64,6 +64,28 @@ public class RestaurantsRepository
     return restaurants;
   }
 
+  internal List<Restaurant> SearchRestaurants(string search)
+  {
+    search = $"%{search}%";
+    string sql = @"
+    SELECT
+    rest.*,
+    COUNT(rv.id) AS reviewCount,
+    owner.*
+    FROM restaurants rest
+    LEFT JOIN reviews rv ON rv.restaurantId = rest.id
+    JOIN accounts owner ON rest.ownerId = owner.id
+    WHERE rest.name LIKE @search OR rest.category LIKE @search OR rest.description LIKE @search
+    GROUP BY rest.id;
+    ";
+    List<Restaurant> restaurants = _db.Query<Restaurant, Profile, Restaurant>(sql, (rest, owner) =>
+    {
+      rest.Owner = owner;
+      return rest;
+    }, new { search }).ToList();
+    return restaurants;
+  }
+
   internal int UpdateRestaurant(Restaurant updateData)
   {
     string sql = @"

@@ -5,7 +5,7 @@
       <h4 class="p-2 text-dark text-center">{{ restaurant.name }}</h4>
       <div class="d-flex justify-content-between p-3 fw-bold text-info"><span> {{ restaurant.category }}</span> <span>{{
         restaurant.exposure
-      }}</span></div>
+      }}</span> <i class="mdi mdi-note"></i>{{ restaurant.reviewCount }}</div>
     </router-link>
   </div>
 </template>

@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS accounts(
   email varchar(255) COMMENT 'User Email',
   picture varchar(255) COMMENT 'User Picture'
 ) default charset utf8 COMMENT '';
+-- utf8mb4 EMOJI SUPPORT
 
 -- Sammys Sammies
 -- Andrew's Awesome lemonde
@@ -32,6 +33,11 @@ INSERT INTO restaurants
 (name, description, imgUrl, category, ownerId)
 VALUES
 ("Parker's Pit Pigs", "When pigs fly", 'https://images.unsplash.com/photo-1470858831619-ca02d796b2a5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1469&q=80', 'Pig', '631b5b5fa7f0b66bb817725a');
+
+SELECT
+name
+FROM restaurants
+WHERE name LIKE '%a%';
 
 CREATE TABLE reviews(
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,

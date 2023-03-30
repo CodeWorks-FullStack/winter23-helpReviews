@@ -31,6 +31,14 @@ public class RestaurantsService
     return filteredRestaurants;
   }
 
+  internal List<Restaurant> SearchRestaurants(string userId, string search)
+  {
+    List<Restaurant> allRestaurants = _repo.SearchRestaurants(search);
+    // include restaurants where you are the owner, OR the restaurant is not shutdown
+    List<Restaurant> filteredRestaurants = allRestaurants.FindAll(r => r.OwnerId == userId || r.Shutdown == false);
+    return filteredRestaurants;
+  }
+
   internal Restaurant UpdateRestaurant(Restaurant updateData)
   {
     Restaurant original = this.GetOneRestaurant(updateData.Id, updateData.OwnerId);

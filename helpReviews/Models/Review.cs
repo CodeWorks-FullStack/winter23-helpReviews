@@ -7,5 +7,7 @@ public class Review
   public string Body { get; set; }
   public string CreatorId { get; set; }
   public int RestaurantId { get; set; }
+  public DateTime CreatedAt { get; set; }
+  public DateTime UpdatedAt { get; set; }
   public Profile Creator { get; set; }
 }

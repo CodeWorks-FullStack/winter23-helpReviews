@@ -30,6 +30,20 @@ public class RestaurantsController : ControllerBase
       return BadRequest(e.Message);
     }
   }
+  [HttpGet("searchExample")]
+  public async Task<ActionResult<List<Restaurant>>> SearchRestaurants(string search)
+  {
+    try
+    {
+      Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
+      List<Restaurant> restaurants = _restaurantsService.SearchRestaurants(userInfo?.Id, search); // will pass null if not logged in, and the users id if they are logged in.
+      return Ok(restaurants);
+    }
+    catch (Exception e)
+    {
+      return BadRequest(e.Message);
+    }
+  }
 
   [HttpGet("{id}")]
   public async Task<ActionResult<Restaurant>> GetOneRestaurant(int id)
