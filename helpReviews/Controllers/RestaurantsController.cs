@@ -5,12 +5,15 @@ namespace helpReviews.Controllers;
 public class RestaurantsController : ControllerBase
 {
   private readonly RestaurantsService _restaurantsService;
+
+  private readonly ReviewsService _reviewsService;
   private readonly Auth0Provider _auth;
 
-  public RestaurantsController(RestaurantsService restaurantsService, Auth0Provider auth)
+  public RestaurantsController(RestaurantsService restaurantsService, Auth0Provider auth, ReviewsService reviewsService)
   {
     _restaurantsService = restaurantsService;
     _auth = auth;
+    _reviewsService = reviewsService;
   }
 
   [HttpGet]
@@ -54,6 +57,21 @@ public class RestaurantsController : ControllerBase
       updateData.Id = id;
       Restaurant restaurant = _restaurantsService.UpdateRestaurant(updateData);
       return Ok(restaurant);
+    }
+    catch (Exception e)
+    {
+      return BadRequest(e.Message);
+    }
+  }
+
+  [HttpGet("{id}/reviews")]
+  public async Task<ActionResult<List<Review>>> GetReviewsByRestaurant(int id)
+  {
+    try
+    {
+      Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
+      List<Review> reviews = _reviewsService.GetReviewsByRestaurant(id, userInfo?.Id);
+      return Ok(reviews);
     }
     catch (Exception e)
     {

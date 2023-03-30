@@ -13,4 +13,5 @@ public class Restaurant
   public bool? Shutdown { get; set; }
 
   public Profile Owner { get; set; }
+
 }
